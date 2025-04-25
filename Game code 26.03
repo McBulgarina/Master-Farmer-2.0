@@ -54,11 +54,13 @@ namespace Master_FarmDrawer_2._0
         static int PePrice;
 
         static List<(int, int)> validPlantCoordinates = new List<(int, int)> { (4, 4), (8, 4), (12, 4), (16, 4), (20, 4), (4, 6), (8, 6), (12, 6), (16, 6), (20, 6) };
+        static string statsFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Stats.txt");
 
         static void Main(string[] args)
         {
-            Console.SetWindowSize(200, 55);
-            Console.SetBufferSize(200, 1000);
+            StatReader();
+            Console.SetWindowSize(500, 85);
+            Console.SetBufferSize(500, 1000);
             while (!GameOver)
             {
                 Console.CursorVisible = false;
@@ -78,6 +80,7 @@ namespace Master_FarmDrawer_2._0
                 ShopDraw();
                 PlayerDraw();
                 UpdateTime();
+                SaveStats();
             }
         }
         static void ShopDraw()
@@ -674,6 +677,107 @@ namespace Master_FarmDrawer_2._0
                 GameOver = true;
                 Console.Clear();
                 Console.WriteLine("Game Over! You have run out of energy.");
+            }
+        }
+        static void SaveStats()
+        {
+            using (StreamWriter writer = new StreamWriter(statsFilePath))
+            {
+                writer.WriteLine("Money: " + Money);
+                writer.WriteLine("Day: " + day);
+                writer.WriteLine("Energy: " + energy);
+                writer.WriteLine("EXP: " + EXP);
+                writer.WriteLine("Hours: " + hours);
+                writer.WriteLine("Potatoes: " + potatoes);
+                writer.WriteLine("Carrots: " + carrot);
+                writer.WriteLine("Wheat: " + wheat);
+                writer.WriteLine("Corn: " + corn);
+                writer.WriteLine("Sunflowers: " + sunflower);
+                writer.WriteLine("Tomatoes: " + tomato);
+                writer.WriteLine("Peppers: " + pepper);
+                writer.WriteLine("Potatoes Seed: " + potatoesSeed);
+                writer.WriteLine("Carrot Seed: " + carrotSeed);
+                writer.WriteLine("Wheat Seed: " + wheatSeed);
+                writer.WriteLine("Corn Seed: " + cornSeed);
+                writer.WriteLine("Sunflower Seed: " + sunflowerSeed);
+                writer.WriteLine("Tomato Seed: " + tomatoSeed);
+                writer.WriteLine("Pepper Seed: " + pepperSeed);
+            }
+        }
+        static void StatReader()
+        {
+            if (!File.Exists(statsFilePath))
+            {
+                SaveStats();
+                return;
+            }
+            File.ReadAllLines("Stats.txt");
+            string[] lines = File.ReadAllLines("Stats.txt");
+            foreach (string line in lines)
+            {
+                string[] parts = line.Split(':');
+                string key = parts[0].Trim();
+                string value = parts[1].Trim();
+                switch (key)
+                {
+                    case "Money":
+                        Money = double.Parse(value);
+                        break;
+                    case "Day":
+                        day = int.Parse(value);
+                        break;
+                    case "Energy":
+                        energy = int.Parse(value);
+                        break;
+                    case "EXP":
+                        EXP = double.Parse(value);
+                        break;
+                    case "Hours":
+                        hours = int.Parse(value);
+                        break;
+                    case "Potatoes":
+                        potatoes = int.Parse(value);
+                        break;
+                    case "Carrots":
+                        carrot = int.Parse(value);
+                        break;
+                    case "Wheat":
+                        wheat = int.Parse(value);
+                        break;
+                    case "Corn":
+                        corn = int.Parse(value);
+                        break;
+                    case "Sunflowers":
+                        sunflower = int.Parse(value);
+                        break;
+                    case "Tomatoes":
+                        tomato = int.Parse(value);
+                        break;
+                    case "Peppers":
+                        pepper = int.Parse(value);
+                        break;
+                    case "Potatoes Seed":
+                        potatoesSeed = int.Parse(value);
+                        break;
+                    case "Carrot Seed":
+                        carrotSeed = int.Parse(value);
+                        break;
+                    case "Wheat Seed":
+                        wheatSeed = int.Parse(value);
+                        break;
+                    case "Corn Seed":
+                        cornSeed = int.Parse(value);
+                        break;
+                    case "Sunflower Seed":
+                        sunflowerSeed = int.Parse(value);
+                        break;
+                    case "Tomato Seed":
+                        tomatoSeed = int.Parse(value);
+                        break;
+                    case "Pepper Seed":
+                        pepperSeed = int.Parse(value);
+                        break;
+                }
             }
         }
     }
